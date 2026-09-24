@@ -1,0 +1,188 @@
+
+=== jing-sell-stx ===
+--------------------------------
+This product can never exist without your support!
+
+We receive sponsorship funds with:
+SP212Y5JKN59YP3GYG07K3S8W5SSGE4KH6B5STXER
+
+Feedbacks and feature requests are welcome.
+To get in touch: contact@stxer.xyz
+--------------------------------
+Using block height 9050788 hash 0xc828b8f7575c60f8b5f07d6d17094d56ea8dac621086a54cc29e932b53f33ec8 to run simulation.
+Simulation will be available at: https://stxer.xyz/simulations/mainnet/3f2cb0519222719462d64b75f457d257
+jing-sell-stx: https://stxer.xyz/simulations/mainnet/3f2cb0519222719462d64b75f457d257
+ok   1. deploy core: (ok true)
+ok   2. deploy jing-ladder-v1: (ok true)
+ok   3. deploy markets-sbtc-stx-jing-v6-3: (ok true)
+ok   4. sync seats: (ok u10)
+ok   5. verify market: (ok true)
+ok   6. initialize market: (ok true)
+ok   7. deploy jing-sell-stx-368-78: (ok true)
+ok   8. canonical rung: (ok true)
+ok   9. initialize rung: (ok true)
+ok   10. fund fresh STX: (ok true)
+ok   11. fund fresh STX: (ok true)
+ok   12. fund fresh STX: (ok true)
+ok   13. fund fresh sBTC: (ok true)
+ok   14. member deposit: (ok (tuple (amount u100000000000) (epoch u0) (sbtc-paid u0) (shares u100000000000) (stx-paid u0)))
+ok   15. member deposit: (ok (tuple (amount u10000000000) (epoch u0) (sbtc-paid u0) (shares u10000000000) (stx-paid u0)))
+  [two members] epoch=0 shares=110000000000 index=1000000000000 held=0 resting=110000000000
+ok   16. rung quote is executable outside mid: 27116437984706
+ok   17. real fill toward 500000: (ok (tuple (rebate-refunded u162) (token-x-received u0) (token-x-rolled u0) (token-y-received u109889498847) (token-y-rolled u0)))
+ok   18. fill returns output: 109889498847
+ok   19. taker leaves no resting position: u0
+ok   20. real fills reduced rung inventory: 501655
+inventory 110000000000 -> 501655, target 500000
+ok   21. sync rung: (ok true)
+  [after fills] epoch=0 shares=110000000000 index=4560500 held=501655 resting=0
+ok   22. index is in the tail (>= SOLD_OUT_INDEX, < MINT_FLOOR): 4560500
+ok   23. residual is under the market minimum: 501655
+ok   24. nothing of the rung rests on the book: 0
+ok   25. newcomer deposit refused (tail): (err u7013)
+ok   26. push cannot re-list the residual: (ok false)
+ok   27. rung has no executable quote left: 0
+ok   28. a taker willing to pay the rung old price: (err u1009)
+ok   29. sync rung: (ok true)
+ok   30. ...fills nothing of the rung: inventory unchanged: 501655
+ok   31. ...index unchanged, so the SOLD_OUT_INDEX close never comes: 4560500
+ok   32. member exit: (ok (tuple (sbtc u36914710) (stx u456050)))
+  [alice left, bob stays] epoch=0 shares=10000000000 index=4560500 held=45605 resting=0
+ok   33. epoch still open (bob holds shares): 0
+ok   34. bob residual is above the dust close: 45605
+ok   35. index still in the tail: 4560500
+ok   36. newcomer still refused: (err u7013)
+ok   37. fund fresh STX: (ok true)
+ok   38. identical rung deployed by another principal: (ok true)
+ok   39. fresh rung at the same level cannot register: (err u6006)
+ok   40. member exit: (ok (tuple (sbtc u3691471) (stx u45605)))
+  [bob left] epoch=1 shares=0 index=1000000000000 held=0 resting=0
+ok   41. last exit finally resets the index: 1000000000000
+ok   42. deposits reopen only now: (ok (tuple (amount u1000000) (epoch u1) (sbtc-paid u0) (shares u1000000) (stx-paid u0)))
+42/42 checks green so far; jing-sell-stx: https://stxer.xyz/simulations/mainnet/3f2cb0519222719462d64b75f457d257
+
+=== jing-sell-stx-market-spread ===
+--------------------------------
+This product can never exist without your support!
+
+We receive sponsorship funds with:
+SP212Y5JKN59YP3GYG07K3S8W5SSGE4KH6B5STXER
+
+Feedbacks and feature requests are welcome.
+To get in touch: contact@stxer.xyz
+--------------------------------
+Using block height 9050789 hash 0xc9579d8a0c3aa748f3fe78e032a821a3809ec80d38781f48e804bb8ca19bffcb to run simulation.
+Simulation will be available at: https://stxer.xyz/simulations/mainnet/1b40c90368fba175deadb850deb40616
+jing-sell-stx-market-spread: https://stxer.xyz/simulations/mainnet/1b40c90368fba175deadb850deb40616
+ok   43. deploy core: (ok true)
+ok   44. deploy jing-ladder-v1: (ok true)
+ok   45. deploy markets-sbtc-stx-jing-v6-3: (ok true)
+ok   46. sync seats: (ok u10)
+ok   47. verify market: (ok true)
+ok   48. initialize market: (ok true)
+ok   49. deploy jing-sell-stx-spread-100-cap-182-57: (ok true)
+ok   50. canonical rung: (ok true)
+ok   51. initialize rung: (ok true)
+ok   52. fund fresh STX: (ok true)
+ok   53. fund fresh STX: (ok true)
+ok   54. fund fresh STX: (ok true)
+ok   55. fund fresh sBTC: (ok true)
+ok   56. member deposit: (ok (tuple (amount u100000000000) (epoch u0) (sbtc-paid u0) (shares u100000000000) (stx-paid u0)))
+ok   57. member deposit: (ok (tuple (amount u10000000000) (epoch u0) (sbtc-paid u0) (shares u10000000000) (stx-paid u0)))
+  [two members] epoch=0 shares=110000000000 index=1000000000000 held=0 resting=110000000000
+ok   58. rung quote is executable outside mid: 27112031036834
+ok   59. real fill toward 500000: (ok (tuple (rebate-refunded u163) (token-x-received u0) (token-x-rolled u0) (token-y-received u109889499466) (token-y-rolled u0)))
+ok   60. fill returns output: 109889499466
+ok   61. taker leaves no resting position: u0
+ok   62. real fills reduced rung inventory: 501036
+inventory 110000000000 -> 501036, target 500000
+ok   63. sync rung: (ok true)
+  [after fills] epoch=0 shares=110000000000 index=4554872 held=501036 resting=0
+ok   64. index is in the tail (>= SOLD_OUT_INDEX, < MINT_FLOOR): 4554872
+ok   65. residual is under the market minimum: 501036
+ok   66. nothing of the rung rests on the book: 0
+ok   67. newcomer deposit refused (tail): (err u7013)
+ok   68. push cannot re-list the residual: (ok false)
+ok   69. rung has no executable quote left: 0
+ok   70. a taker willing to pay the rung old price: (err u1009)
+ok   71. sync rung: (ok true)
+ok   72. ...fills nothing of the rung: inventory unchanged: 501036
+ok   73. ...index unchanged, so the SOLD_OUT_INDEX close never comes: 4554872
+ok   74. member exit: (ok (tuple (sbtc u36920710) (stx u455487)))
+  [alice left, bob stays] epoch=0 shares=10000000000 index=4554872 held=45549 resting=0
+ok   75. epoch still open (bob holds shares): 0
+ok   76. bob residual is above the dust close: 45549
+ok   77. index still in the tail: 4554872
+ok   78. newcomer still refused: (err u7013)
+ok   79. fund fresh STX: (ok true)
+ok   80. identical rung deployed by another principal: (ok true)
+ok   81. fresh rung at the same level cannot register: (err u6006)
+ok   82. member exit: (ok (tuple (sbtc u3692071) (stx u45548)))
+  [bob left] epoch=1 shares=0 index=1000000000000 held=1 resting=0
+ok   83. last exit finally resets the index: 1000000000000
+ok   84. deposits reopen only now: (ok (tuple (amount u1000000) (epoch u1) (sbtc-paid u0) (shares u1000000) (stx-paid u0)))
+84/84 checks green so far; jing-sell-stx-market-spread: https://stxer.xyz/simulations/mainnet/1b40c90368fba175deadb850deb40616
+
+=== jing-sell-stx-core-spread ===
+--------------------------------
+This product can never exist without your support!
+
+We receive sponsorship funds with:
+SP212Y5JKN59YP3GYG07K3S8W5SSGE4KH6B5STXER
+
+Feedbacks and feature requests are welcome.
+To get in touch: contact@stxer.xyz
+--------------------------------
+Using block height 9050790 hash 0xaf344c058f53888b887869012e63eb7380196de0d16135782f1b9798b75b333e to run simulation.
+Simulation will be available at: https://stxer.xyz/simulations/mainnet/5819da2a8293fab8170d29121633810a
+jing-sell-stx-core-spread: https://stxer.xyz/simulations/mainnet/5819da2a8293fab8170d29121633810a
+ok   85. deploy core: (ok true)
+ok   86. deploy jing-ladder-v1: (ok true)
+ok   87. deploy markets-sbtc-stx-jing-v6-3: (ok true)
+ok   88. sync seats: (ok u10)
+ok   89. verify market: (ok true)
+ok   90. initialize market: (ok true)
+ok   91. deploy jing-sell-stx-spread-100: (ok true)
+ok   92. canonical rung: (ok true)
+ok   93. initialize rung: (ok true)
+ok   94. fund fresh STX: (ok true)
+ok   95. fund fresh STX: (ok true)
+ok   96. fund fresh STX: (ok true)
+ok   97. fund fresh sBTC: (ok true)
+ok   98. member deposit: (ok (tuple (amount u100000000000) (epoch u0) (sbtc-paid u0) (shares u100000000000) (stx-paid u0)))
+ok   99. member deposit: (ok (tuple (amount u10000000000) (epoch u0) (sbtc-paid u0) (shares u10000000000) (stx-paid u0)))
+  [two members] epoch=0 shares=110000000000 index=1000000000000 held=0 resting=110000000000
+ok   100. rung quote is executable outside mid: 27122370249397
+ok   101. real fill toward 500000: (ok (tuple (rebate-refunded u163) (token-x-received u0) (token-x-rolled u0) (token-y-received u109889500476) (token-y-rolled u0)))
+ok   102. fill returns output: 109889500476
+ok   103. taker leaves no resting position: u0
+ok   104. real fills reduced rung inventory: 500025
+inventory 110000000000 -> 500025, target 500000
+ok   105. sync rung: (ok true)
+  [after fills] epoch=0 shares=110000000000 index=4545681 held=500025 resting=0
+ok   106. index is in the tail (>= SOLD_OUT_INDEX, < MINT_FLOOR): 4545681
+ok   107. residual is under the market minimum: 500025
+ok   108. nothing of the rung rests on the book: 0
+ok   109. newcomer deposit refused (tail): (err u7013)
+ok   110. push cannot re-list the residual: (ok false)
+ok   111. rung has no executable quote left: 0
+ok   112. a taker willing to pay the rung old price: (err u1009)
+ok   113. sync rung: (ok true)
+ok   114. ...fills nothing of the rung: inventory unchanged: 500025
+ok   115. ...index unchanged, so the SOLD_OUT_INDEX close never comes: 4545681
+ok   116. member exit: (ok (tuple (sbtc u36906636) (stx u454568)))
+  [alice left, bob stays] epoch=0 shares=10000000000 index=4545681 held=45457 resting=0
+ok   117. epoch still open (bob holds shares): 0
+ok   118. bob residual is above the dust close: 45457
+ok   119. index still in the tail: 4545681
+ok   120. newcomer still refused: (err u7013)
+ok   121. member exit: (ok (tuple (sbtc u3690663) (stx u45456)))
+  [bob left] epoch=1 shares=0 index=1000000000000 held=1 resting=0
+ok   122. last exit finally resets the index: 1000000000000
+ok   123. deposits reopen only now: (ok (tuple (amount u1000000) (epoch u1) (sbtc-paid u0) (shares u1000000) (stx-paid u0)))
+123/123 checks green so far; jing-sell-stx-core-spread: https://stxer.xyz/simulations/mainnet/5819da2a8293fab8170d29121633810a
+
+123/123 checks green
+jing-sell-stx: https://stxer.xyz/simulations/mainnet/3f2cb0519222719462d64b75f457d257
+jing-sell-stx-market-spread: https://stxer.xyz/simulations/mainnet/1b40c90368fba175deadb850deb40616
+jing-sell-stx-core-spread: https://stxer.xyz/simulations/mainnet/5819da2a8293fab8170d29121633810a
