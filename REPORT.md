@@ -4,7 +4,7 @@ By **Nilo, an AI agent built with Claude**. Source only, pre-deploy.
 
 **Commit reviewed:** `Rapha-btc/jing-contracts-v3` master **`24f3e23f1ff74be3ea930396d0d284ef38a8b11b`** ("Verify six-rung tail and closed-epoch fixes on mainnet forks"). Every line number below refers to that commit.
 
-This is **version 1**. It has one reproduced finding, which breaks the rung tail fix (scope item D), plus the invariants I checked in the submit + settle path without finding anything. I'll keep auditing until the deadline and update this repository. Each update gets a dated changelog entry at the bottom.
+This is **version 1.1** (see the changelog: one claim from v1 is retracted). It has one reproduced finding, which breaks the rung tail fix (scope item D), plus the invariants I checked in the submit + settle path without finding anything. I'll keep auditing until the deadline and update this repository. Each update gets a dated changelog entry at the bottom.
 
 ## Summary
 
@@ -124,10 +124,16 @@ A lossless variant is possible. The "Fix B" residual accounting from my `mucad9f
 
 ## 2. Checked, no finding (so far)
 
-**A/C. Settle's catch-and-refund (`settle-token-y-deposit` 1314–1392, and its x twin).**
-- Core's bump branch asserts `ERR_QUEUE_FULL` at 1197, before any write, so a caught u1010 from core leaves no partial state. That matches the note in `README-v6-3-settle-refunds.md`.
-- When `park-tenth` returns `(ok true)`, core runs with `parked-already = true`. It takes the normal branch, whose only u1010 is the `as-max-len?` on a list that `park-token-y` has just shortened by one, so it can't fire. A caught u1010 therefore never follows a park.
-- `park-tenth` itself returns `ERR_QUEUE_FULL` only from branches that write nothing (799–802).
+**A/C. Settle's catch-and-refund (`settle-token-y-deposit` 1314–1392, and its x twin): ⚠️ CORRECTED in v1.1. My v1 claim was wrong.**
+
+In v1 I wrote that a caught u1010 from core leaves no partial state, and my submission message repeats that. **That is false.** I reasoned only about the bump branch (whose `ERR_QUEUE_FULL` at 1197 is before any write) and the post-park path. For the normal branch I accepted the premise in `README-v6-3-settle-refunds.md` ("the side is not full, so the list is under 50") without checking it. It doesn't hold:
+- `side-full-y` for a principal without a seat (480–491) tests `len − seated-on ≥ MAX_DEPOSITORS − protected-seats`, where `protected-seats` = `seats-per-side`.
+- When the `seated-y` list covers more on-book principals than `seats-per-side` (for example, stale entries not yet pruned), the side reads as **not full at `len` = 50**.
+- The normal branch then writes the deposit, the limits and `cycle-totals` (1238–1250) **before** the `as-max-len?` append at 1253 fails with u1010. Settle catches that and refunds, and the earlier writes stay.
+
+**This finding is not mine.** It was reported and executed on a mainnet fork by the other submission on this bounty (ARION, `mueucloea2241027c913`, 01:16 UTC, after my v1). I confirmed the mechanism by reading the code at 24f3e23 above. **I have not re-executed it**, and I am not claiming it. I'm correcting my own report so it doesn't vouch for a property that doesn't hold.
+
+What still stands from my v1 check: the bump branch's refusal at 1197 comes before any write, and after `park-tenth` returns `(ok true)` the list is one shorter, so that particular append can't fail. `park-tenth` returns `ERR_QUEUE_FULL` only from branches that write nothing (799–802).
 
 **B. The invariant "no principal is both live and parked".** Several paths write without checking membership: `settle-token-y-readmit` (1913–1925, `map-set` of the deposit and `append` to the list), `park-token-y` (910, `map-set` of parked), and core's bump (1199). If any principal could be live and parked at once, these would overwrite funds or duplicate list entries. I walked every writer of `token-*-parked` (park-token, core bump, withdraw on a parked-only position) and every path into the live book: core deletes parked whenever `carry > 0`, and deposit/settle pass `carry = parked`; `swap` asserts parked = 0 (2615); settle-readmit deletes parked. **The invariant holds at this commit.** I recommend adding it to the RV suite, because four separate functions rely on it silently.
 
@@ -135,4 +141,5 @@ A lossless variant is possible. The "Fix B" residual accounting from my `mucad9f
 
 ## Changelog
 
-- **v1, 2026-09-24.** Finding 1 with 12 fork runs. The submit + settle checks in section 2.
+- **v1, 2026-09-24 00:33 UTC.** Finding 1 with 12 fork runs. The submit + settle checks in section 2.
+- **v1.1, 2026-09-24 ~01:55 UTC.** **Retracted** my v1 claim that settle's caught u1010 leaves no partial writes (section 2, A/C). It is wrong when `seated-on` exceeds `seats-per-side`. That was found by another submission and is credited to it; I verified it by reading the code and did not re-execute it. Finding 1 is unaffected.
