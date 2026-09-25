@@ -139,7 +139,42 @@ What still stands from my v1 check: the bump branch's refusal at 1197 comes befo
 
 **Filters and distribution at settlement.** `filter-limit-violating-*` and `filter-small-*` `map-set` the next-cycle deposit rather than adding to it. That is safe because the next cycle is empty until this settlement writes it and each principal is moved once: each filter re-reads the list that the previous one shortened.
 
+## 3. Fork test of the maintainer's fix: `afbf33d` lossless tail roll (added 2026-09-25)
+
+The bounty README at master lists this fix as *"pending Rapha's double review, not fork-tested"*. This section is that fork test. It's evidence for the review, not a review of the whole diff.
+
+**What was run.** `simulations/nilo-tail-roll-afbf33d.js`, a copy of the finding-1 harness pointed at the contracts of commit `afbf33d` **as committed** (core, ladder, market and all six rungs; no source edits). It uses the same real fills through public `swap` that froze the rung at `24f3e23`, then checks:
+
+1. the rung is in the tail (index between `SOLD_OUT_INDEX` and `MINT_FLOOR`, residual under the market minimum, nothing resting);
+2. a newcomer `deposit` is now **accepted** (it used to be `u7013`), the epoch advances by one, and the index restarts at `SCALE`;
+3. the reserve after the roll covers what the old members are owed (`reserved-sats`/`reserved-ustx` ≥ the sum of their unsold shares read from `get-position` before the roll);
+4. each old member's `withdraw` pays **exactly** the proceeds and the unsold share read before the roll;
+5. the reserve never goes short on the last old exit (no underflow), and the newcomer can leave with her deposit.
+
+**Result: 222/222 checks green, all six rungs.**
+
+| rung | reserve after roll | owed (alice + bob) | reserve after both exit | fork |
+|---|---|---|---|---|
+| `jing-buy-stx` | 500 sats | 455 + 45 | 0 | https://stxer.xyz/simulations/mainnet/cf9b7eb16e37f7fbf17aa43c0b34f2ae |
+| `jing-buy-stx-market-spread` | 500 sats | 455 + 45 | 0 | https://stxer.xyz/simulations/mainnet/311c7747ab2031c185897304a10b3a2d |
+| `jing-buy-stx-core-spread` | 500 sats | 455 + 45 | 0 | https://stxer.xyz/simulations/mainnet/e97f17b8289fcb701552e47e57048bf4 |
+| `jing-sell-stx` | 501,496 uSTX | 455,906 + 45,590 | 0 | https://stxer.xyz/simulations/mainnet/b9c99bebdd48d38d186fb83c67b49a1d |
+| `jing-sell-stx-market-spread` | 500,182 uSTX | 454,711 + 45,471 | 0 | https://stxer.xyz/simulations/mainnet/fe3d9ab398539e81542cb3496442535e |
+| `jing-sell-stx-core-spread` | 500,432 uSTX | 454,939 + 45,493 | 0 | https://stxer.xyz/simulations/mainnet/eefc8d8494a303190de6f6feffe5abc6 |
+
+Full log: `logs/tail-roll-afbf33d-2026-09-25.log`.
+
+**What this does not cover.**
+- Only two old members, so the rounding left in the reserve was 0 here. With more members the floor division can leave up to N−1 units behind per rolled epoch; this run neither shows nor rules that out.
+- One roll per run. Nothing here tests two rolls in a row, a roll while an order is pending settlement, or a roll with a member position that rounds to 0 (F-8 in the README).
+- Only the path I reported. The rest of the `afbf33d` diff (the F-6 hardening) isn't exercised here.
+
+One small observation from the runs: the part of the residual above the reserve (1 sat, or 1 uSTX) stays in the contract and shows up as resting in the new epoch (`resting=100000001` against a 100000000 deposit). The newcomer exits with exactly her deposit, so that unit isn't paid to anyone in this run.
+
+---
+
 ## Changelog
 
 - **v1, 2026-09-24 00:33 UTC.** Finding 1 with 12 fork runs. The submit + settle checks in section 2.
 - **v1.1, 2026-09-24 ~01:55 UTC.** **Retracted** my v1 claim that settle's caught u1010 leaves no partial writes (section 2, A/C). It is wrong when `seated-on` exceeds `seats-per-side`. That was found by another submission and is credited to it; I verified it by reading the code and did not re-execute it. Finding 1 is unaffected.
+- **v1.2, 2026-09-25 ~22:30 UTC.** Added section 3: fork test of the maintainer's fix `afbf33d` (lossless tail roll), 222/222 on all six rungs, with its limits. Finding 1 and section 2 unchanged.

@@ -1,0 +1,362 @@
+
+=== jing-buy-stx ===
+--------------------------------
+This product can never exist without your support!
+
+We receive sponsorship funds with:
+SP212Y5JKN59YP3GYG07K3S8W5SSGE4KH6B5STXER
+
+Feedbacks and feature requests are welcome.
+To get in touch: contact@stxer.xyz
+--------------------------------
+Using block height 9062931 hash 0x75ea94ec88883be23605de343f5713cd2d1ef91f4649870922d67e67782b0235 to run simulation.
+Simulation will be available at: https://stxer.xyz/simulations/mainnet/cf9b7eb16e37f7fbf17aa43c0b34f2ae
+jing-buy-stx: https://stxer.xyz/simulations/mainnet/cf9b7eb16e37f7fbf17aa43c0b34f2ae
+ok   1. deploy core: (ok true)
+ok   2. deploy jing-ladder-v1: (ok true)
+ok   3. deploy markets-sbtc-stx-jing-v6-3: (ok true)
+ok   4. sync seats: (ok u10)
+ok   5. verify market: (ok true)
+ok   6. initialize market: (ok true)
+ok   7. deploy jing-buy-stx-382-85: (ok true)
+ok   8. canonical rung: (ok true)
+ok   9. initialize rung: (ok true)
+ok   10. fund fresh sBTC: (ok true)
+ok   11. fund fresh sBTC: (ok true)
+ok   12. fund fresh sBTC: (ok true)
+ok   13. fund fresh STX: (ok true)
+ok   14. member deposit: (ok (tuple (amount u100000000) (epoch u0) (sbtc-paid u0) (shares u100000000) (stx-paid u0)))
+ok   15. member deposit: (ok (tuple (amount u10000000) (epoch u0) (sbtc-paid u0) (shares u10000000) (stx-paid u0)))
+  [two members] epoch=0 shares=110000000 index=1000000000000 held=0 resting=110000000
+ok   16. rung quote is executable outside mid: 26119890296460
+ok   17. real fill toward 500: (ok (tuple (rebate-refunded u1151578) (token-x-received u109889500) (token-x-rolled u0) (token-y-received u0) (token-y-rolled u2612)))
+ok   18. fill returns output: 109889500
+ok   19. taker leaves no resting position: u0
+ok   20. real fills reduced rung inventory: 501
+inventory 110000000 -> 501, target 500
+ok   21. sync rung: (ok true)
+  [after fills] epoch=0 shares=110000000 index=4554545 held=501 resting=0
+ok   22. index is in the tail (>= SOLD_OUT_INDEX, < MINT_FLOOR): 4554545
+ok   23. residual is under the market minimum: 501
+ok   24. reserve empty before the roll: 0
+  owed before roll: alice back=455 proceeds=261458911035; bob back=45 proceeds=26145891103
+ok   25. newcomer deposit accepted (tail roll): (ok (tuple (amount u100000000) (epoch u1) (sbtc-paid u0) (shares u100000000) (stx-paid u0)))
+  [after roll] epoch=1 shares=100000000 index=1000000000000 held=0 resting=100000001
+ok   26. epoch advanced by one: 1
+  reserve after roll: 500
+ok   27. reserve covers what old members are owed: 500
+ok   28. bob (old epoch) exits: (ok (tuple (sbtc u45) (stx u26145891103)))
+ok   29. bob gets the unsold share back (sbtc): 45
+ok   30. bob gets the exact proceeds (stx): 26145891103
+ok   31. alice (old epoch) exits: (ok (tuple (sbtc u455) (stx u261458911035)))
+ok   32. alice gets the unsold share back (sbtc): 455
+ok   33. alice gets the exact proceeds (stx): 261458911035
+  reserve left after both old members: 0 (rounding dust, never paid out)
+ok   34. reserve never goes short (no underflow on the last exit): 0
+ok   35. reserve leftover is rounding dust (< number of old members): 0
+ok   36. member exit: (ok (tuple (sbtc u100000000) (stx u0)))
+ok   37. newcomer exits with her deposit (no fills in the new epoch): 100000000
+37/37 checks green so far; jing-buy-stx: https://stxer.xyz/simulations/mainnet/cf9b7eb16e37f7fbf17aa43c0b34f2ae
+
+=== jing-buy-stx-market-spread ===
+--------------------------------
+This product can never exist without your support!
+
+We receive sponsorship funds with:
+SP212Y5JKN59YP3GYG07K3S8W5SSGE4KH6B5STXER
+
+Feedbacks and feature requests are welcome.
+To get in touch: contact@stxer.xyz
+--------------------------------
+Using block height 9062932 hash 0x377afe623476efc80ac85fd936a6c667061fc87d36d3b33a1882e19c62eb50d2 to run simulation.
+Simulation will be available at: https://stxer.xyz/simulations/mainnet/311c7747ab2031c185897304a10b3a2d
+jing-buy-stx-market-spread: https://stxer.xyz/simulations/mainnet/311c7747ab2031c185897304a10b3a2d
+ok   38. deploy core: (ok true)
+ok   39. deploy jing-ladder-v1: (ok true)
+ok   40. deploy markets-sbtc-stx-jing-v6-3: (ok true)
+ok   41. sync seats: (ok u10)
+ok   42. verify market: (ok true)
+ok   43. initialize market: (ok true)
+ok   44. deploy jing-buy-stx-spread-100-floor-773-36: (ok true)
+ok   45. canonical rung: (ok true)
+ok   46. initialize rung: (ok true)
+ok   47. fund fresh sBTC: (ok true)
+ok   48. fund fresh sBTC: (ok true)
+ok   49. fund fresh sBTC: (ok true)
+ok   50. fund fresh STX: (ok true)
+ok   51. member deposit: (ok (tuple (amount u100000000) (epoch u0) (sbtc-paid u0) (shares u100000000) (stx-paid u0)))
+ok   52. member deposit: (ok (tuple (amount u10000000) (epoch u0) (sbtc-paid u0) (shares u10000000) (stx-paid u0)))
+  [two members] epoch=0 shares=110000000 index=1000000000000 held=0 resting=110000000
+ok   53. rung quote is executable outside mid: 26119502797780
+ok   54. real fill toward 500: (ok (tuple (rebate-refunded u1151561) (token-x-received u109889500) (token-x-rolled u0) (token-y-received u0) (token-y-rolled u2612)))
+ok   55. fill returns output: 109889500
+ok   56. taker leaves no resting position: u0
+ok   57. real fills reduced rung inventory: 501
+inventory 110000000 -> 501, target 500
+ok   58. sync rung: (ok true)
+  [after fills] epoch=0 shares=110000000 index=4554545 held=501 resting=0
+ok   59. index is in the tail (>= SOLD_OUT_INDEX, < MINT_FLOOR): 4554545
+ok   60. residual is under the market minimum: 501
+ok   61. reserve empty before the roll: 0
+  owed before roll: alice back=455 proceeds=261455032190; bob back=45 proceeds=26145503219
+ok   62. newcomer deposit accepted (tail roll): (ok (tuple (amount u100000000) (epoch u1) (sbtc-paid u0) (shares u100000000) (stx-paid u0)))
+  [after roll] epoch=1 shares=100000000 index=1000000000000 held=0 resting=100000001
+ok   63. epoch advanced by one: 1
+  reserve after roll: 500
+ok   64. reserve covers what old members are owed: 500
+ok   65. bob (old epoch) exits: (ok (tuple (sbtc u45) (stx u26145503219)))
+ok   66. bob gets the unsold share back (sbtc): 45
+ok   67. bob gets the exact proceeds (stx): 26145503219
+ok   68. alice (old epoch) exits: (ok (tuple (sbtc u455) (stx u261455032190)))
+ok   69. alice gets the unsold share back (sbtc): 455
+ok   70. alice gets the exact proceeds (stx): 261455032190
+  reserve left after both old members: 0 (rounding dust, never paid out)
+ok   71. reserve never goes short (no underflow on the last exit): 0
+ok   72. reserve leftover is rounding dust (< number of old members): 0
+ok   73. member exit: (ok (tuple (sbtc u100000000) (stx u0)))
+ok   74. newcomer exits with her deposit (no fills in the new epoch): 100000000
+74/74 checks green so far; jing-buy-stx-market-spread: https://stxer.xyz/simulations/mainnet/311c7747ab2031c185897304a10b3a2d
+
+=== jing-buy-stx-core-spread ===
+--------------------------------
+This product can never exist without your support!
+
+We receive sponsorship funds with:
+SP212Y5JKN59YP3GYG07K3S8W5SSGE4KH6B5STXER
+
+Feedbacks and feature requests are welcome.
+To get in touch: contact@stxer.xyz
+--------------------------------
+Using block height 9062933 hash 0x062b069f8a80d88e47d8bbe8ee76137b992c8b1c7fb6f100175dab18cf1712a3 to run simulation.
+Simulation will be available at: https://stxer.xyz/simulations/mainnet/e97f17b8289fcb701552e47e57048bf4
+jing-buy-stx-core-spread: https://stxer.xyz/simulations/mainnet/e97f17b8289fcb701552e47e57048bf4
+ok   75. deploy core: (ok true)
+ok   76. deploy jing-ladder-v1: (ok true)
+ok   77. deploy markets-sbtc-stx-jing-v6-3: (ok true)
+ok   78. sync seats: (ok u10)
+ok   79. verify market: (ok true)
+ok   80. initialize market: (ok true)
+ok   81. deploy jing-buy-stx-spread-100: (ok true)
+ok   82. canonical rung: (ok true)
+ok   83. initialize rung: (ok true)
+ok   84. fund fresh sBTC: (ok true)
+ok   85. fund fresh sBTC: (ok true)
+ok   86. fund fresh sBTC: (ok true)
+ok   87. fund fresh STX: (ok true)
+ok   88. member deposit: (ok (tuple (amount u100000000) (epoch u0) (sbtc-paid u0) (shares u100000000) (stx-paid u0)))
+ok   89. member deposit: (ok (tuple (amount u10000000) (epoch u0) (sbtc-paid u0) (shares u10000000) (stx-paid u0)))
+  [two members] epoch=0 shares=110000000 index=1000000000000 held=0 resting=110000000
+ok   90. rung quote is executable outside mid: 26107760123810
+ok   91. real fill toward 500: (ok (tuple (rebate-refunded u1151044) (token-x-received u109889500) (token-x-rolled u0) (token-y-received u0) (token-y-rolled u2610)))
+ok   92. fill returns output: 109889500
+ok   93. taker leaves no resting position: u0
+ok   94. real fills reduced rung inventory: 501
+inventory 110000000 -> 501, target 500
+ok   95. sync rung: (ok true)
+  [after fills] epoch=0 shares=110000000 index=4554545 held=501 resting=0
+ok   96. index is in the tail (>= SOLD_OUT_INDEX, < MINT_FLOOR): 4554545
+ok   97. residual is under the market minimum: 501
+ok   98. reserve empty before the roll: 0
+  owed before roll: alice back=455 proceeds=261337488560; bob back=45 proceeds=26133748856
+ok   99. newcomer deposit accepted (tail roll): (ok (tuple (amount u100000000) (epoch u1) (sbtc-paid u0) (shares u100000000) (stx-paid u0)))
+  [after roll] epoch=1 shares=100000000 index=1000000000000 held=0 resting=100000001
+ok   100. epoch advanced by one: 1
+  reserve after roll: 500
+ok   101. reserve covers what old members are owed: 500
+ok   102. bob (old epoch) exits: (ok (tuple (sbtc u45) (stx u26133748856)))
+ok   103. bob gets the unsold share back (sbtc): 45
+ok   104. bob gets the exact proceeds (stx): 26133748856
+ok   105. alice (old epoch) exits: (ok (tuple (sbtc u455) (stx u261337488560)))
+ok   106. alice gets the unsold share back (sbtc): 455
+ok   107. alice gets the exact proceeds (stx): 261337488560
+  reserve left after both old members: 0 (rounding dust, never paid out)
+ok   108. reserve never goes short (no underflow on the last exit): 0
+ok   109. reserve leftover is rounding dust (< number of old members): 0
+ok   110. member exit: (ok (tuple (sbtc u100000000) (stx u0)))
+ok   111. newcomer exits with her deposit (no fills in the new epoch): 100000000
+111/111 checks green so far; jing-buy-stx-core-spread: https://stxer.xyz/simulations/mainnet/e97f17b8289fcb701552e47e57048bf4
+
+=== jing-sell-stx ===
+--------------------------------
+This product can never exist without your support!
+
+We receive sponsorship funds with:
+SP212Y5JKN59YP3GYG07K3S8W5SSGE4KH6B5STXER
+
+Feedbacks and feature requests are welcome.
+To get in touch: contact@stxer.xyz
+--------------------------------
+Using block height 9062934 hash 0x4b3f818110ef8fd4995743d8f2f1642d4dbb4d32dad64f02f990f8d7f5b792c0 to run simulation.
+Simulation will be available at: https://stxer.xyz/simulations/mainnet/b9c99bebdd48d38d186fb83c67b49a1d
+jing-sell-stx: https://stxer.xyz/simulations/mainnet/b9c99bebdd48d38d186fb83c67b49a1d
+ok   112. deploy core: (ok true)
+ok   113. deploy jing-ladder-v1: (ok true)
+ok   114. deploy markets-sbtc-stx-jing-v6-3: (ok true)
+ok   115. sync seats: (ok u10)
+ok   116. verify market: (ok true)
+ok   117. initialize market: (ok true)
+ok   118. deploy jing-sell-stx-390-83: (ok true)
+ok   119. canonical rung: (ok true)
+ok   120. initialize rung: (ok true)
+ok   121. fund fresh STX: (ok true)
+ok   122. fund fresh STX: (ok true)
+ok   123. fund fresh STX: (ok true)
+ok   124. fund fresh sBTC: (ok true)
+ok   125. member deposit: (ok (tuple (amount u100000000000) (epoch u0) (sbtc-paid u0) (shares u100000000000) (stx-paid u0)))
+ok   126. member deposit: (ok (tuple (amount u10000000000) (epoch u0) (sbtc-paid u0) (shares u10000000000) (stx-paid u0)))
+  [two members] epoch=0 shares=110000000000 index=1000000000000 held=0 resting=110000000000
+ok   127. rung quote is executable outside mid: 25586572166926
+ok   128. real fill toward 500000: (ok (tuple (rebate-refunded u172) (token-x-received u0) (token-x-rolled u0) (token-y-received u109889499005) (token-y-rolled u0)))
+ok   129. fill returns output: 109889499005
+ok   130. taker leaves no resting position: u0
+ok   131. real fills reduced rung inventory: 501497
+inventory 110000000000 -> 501497, target 500000
+ok   132. sync rung: (ok true)
+  [after fills] epoch=0 shares=110000000000 index=4559063 held=501497 resting=0
+ok   133. index is in the tail (>= SOLD_OUT_INDEX, < MINT_FLOOR): 4559063
+ok   134. residual is under the market minimum: 501497
+ok   135. reserve empty before the roll: 0
+  owed before roll: alice back=455906 proceeds=39121904; bob back=45590 proceeds=3912190
+ok   136. newcomer deposit accepted (tail roll): (ok (tuple (amount u100000000000) (epoch u1) (sbtc-paid u0) (shares u100000000000) (stx-paid u0)))
+  [after roll] epoch=1 shares=100000000000 index=1000000000000 held=0 resting=100000000001
+ok   137. epoch advanced by one: 1
+  reserve after roll: 501496
+ok   138. reserve covers what old members are owed: 501496
+ok   139. bob (old epoch) exits: (ok (tuple (sbtc u3912190) (stx u45590)))
+ok   140. bob gets the unsold share back (stx): 45590
+ok   141. bob gets the exact proceeds (sbtc): 3912190
+ok   142. alice (old epoch) exits: (ok (tuple (sbtc u39121904) (stx u455906)))
+ok   143. alice gets the unsold share back (stx): 455906
+ok   144. alice gets the exact proceeds (sbtc): 39121904
+  reserve left after both old members: 0 (rounding dust, never paid out)
+ok   145. reserve never goes short (no underflow on the last exit): 0
+ok   146. reserve leftover is rounding dust (< number of old members): 0
+ok   147. member exit: (ok (tuple (sbtc u0) (stx u100000000000)))
+ok   148. newcomer exits with her deposit (no fills in the new epoch): 100000000000
+148/148 checks green so far; jing-sell-stx: https://stxer.xyz/simulations/mainnet/b9c99bebdd48d38d186fb83c67b49a1d
+
+=== jing-sell-stx-market-spread ===
+--------------------------------
+This product can never exist without your support!
+
+We receive sponsorship funds with:
+SP212Y5JKN59YP3GYG07K3S8W5SSGE4KH6B5STXER
+
+Feedbacks and feature requests are welcome.
+To get in touch: contact@stxer.xyz
+--------------------------------
+Using block height 9062935 hash 0x4efd4b70a7a57647e72a88a3ec39201bacec936b0712427de0149adb57c82e3f to run simulation.
+Simulation will be available at: https://stxer.xyz/simulations/mainnet/fe3d9ab398539e81542cb3496442535e
+jing-sell-stx-market-spread: https://stxer.xyz/simulations/mainnet/fe3d9ab398539e81542cb3496442535e
+ok   149. deploy core: (ok true)
+ok   150. deploy jing-ladder-v1: (ok true)
+ok   151. deploy markets-sbtc-stx-jing-v6-3: (ok true)
+ok   152. sync seats: (ok u10)
+ok   153. verify market: (ok true)
+ok   154. initialize market: (ok true)
+ok   155. deploy jing-sell-stx-spread-100-cap-193-45: (ok true)
+ok   156. canonical rung: (ok true)
+ok   157. initialize rung: (ok true)
+ok   158. fund fresh STX: (ok true)
+ok   159. fund fresh STX: (ok true)
+ok   160. fund fresh STX: (ok true)
+ok   161. fund fresh sBTC: (ok true)
+ok   162. member deposit: (ok (tuple (amount u100000000000) (epoch u0) (sbtc-paid u0) (shares u100000000000) (stx-paid u0)))
+ok   163. member deposit: (ok (tuple (amount u10000000000) (epoch u0) (sbtc-paid u0) (shares u10000000000) (stx-paid u0)))
+  [two members] epoch=0 shares=110000000000 index=1000000000000 held=0 resting=110000000000
+ok   164. rung quote is executable outside mid: 25587508097971
+ok   165. real fill toward 500000: (ok (tuple (rebate-refunded u172) (token-x-received u0) (token-x-rolled u0) (token-y-received u109889500318) (token-y-rolled u0)))
+ok   166. fill returns output: 109889500318
+ok   167. taker leaves no resting position: u0
+ok   168. real fills reduced rung inventory: 500183
+inventory 110000000000 -> 500183, target 500000
+ok   169. sync rung: (ok true)
+  [after fills] epoch=0 shares=110000000000 index=4547118 held=500183 resting=0
+ok   170. index is in the tail (>= SOLD_OUT_INDEX, < MINT_FLOOR): 4547118
+ok   171. residual is under the market minimum: 500183
+ok   172. reserve empty before the roll: 0
+  owed before roll: alice back=454711 proceeds=39120474; bob back=45471 proceeds=3912047
+ok   173. newcomer deposit accepted (tail roll): (ok (tuple (amount u100000000000) (epoch u1) (sbtc-paid u0) (shares u100000000000) (stx-paid u0)))
+  [after roll] epoch=1 shares=100000000000 index=1000000000000 held=0 resting=100000000001
+ok   174. epoch advanced by one: 1
+  reserve after roll: 500182
+ok   175. reserve covers what old members are owed: 500182
+ok   176. bob (old epoch) exits: (ok (tuple (sbtc u3912047) (stx u45471)))
+ok   177. bob gets the unsold share back (stx): 45471
+ok   178. bob gets the exact proceeds (sbtc): 3912047
+ok   179. alice (old epoch) exits: (ok (tuple (sbtc u39120474) (stx u454711)))
+ok   180. alice gets the unsold share back (stx): 454711
+ok   181. alice gets the exact proceeds (sbtc): 39120474
+  reserve left after both old members: 0 (rounding dust, never paid out)
+ok   182. reserve never goes short (no underflow on the last exit): 0
+ok   183. reserve leftover is rounding dust (< number of old members): 0
+ok   184. member exit: (ok (tuple (sbtc u0) (stx u100000000000)))
+ok   185. newcomer exits with her deposit (no fills in the new epoch): 100000000000
+185/185 checks green so far; jing-sell-stx-market-spread: https://stxer.xyz/simulations/mainnet/fe3d9ab398539e81542cb3496442535e
+
+=== jing-sell-stx-core-spread ===
+--------------------------------
+This product can never exist without your support!
+
+We receive sponsorship funds with:
+SP212Y5JKN59YP3GYG07K3S8W5SSGE4KH6B5STXER
+
+Feedbacks and feature requests are welcome.
+To get in touch: contact@stxer.xyz
+--------------------------------
+Using block height 9062936 hash 0x780c8b1f16804aa8d8b85e8dabab0e7cc642fb7aef6280353f427e782ce80529 to run simulation.
+Simulation will be available at: https://stxer.xyz/simulations/mainnet/eefc8d8494a303190de6f6feffe5abc6
+jing-sell-stx-core-spread: https://stxer.xyz/simulations/mainnet/eefc8d8494a303190de6f6feffe5abc6
+ok   186. deploy core: (ok true)
+ok   187. deploy jing-ladder-v1: (ok true)
+ok   188. deploy markets-sbtc-stx-jing-v6-3: (ok true)
+ok   189. sync seats: (ok u10)
+ok   190. verify market: (ok true)
+ok   191. initialize market: (ok true)
+ok   192. deploy jing-sell-stx-spread-100: (ok true)
+ok   193. canonical rung: (ok true)
+ok   194. initialize rung: (ok true)
+ok   195. fund fresh STX: (ok true)
+ok   196. fund fresh STX: (ok true)
+ok   197. fund fresh STX: (ok true)
+ok   198. fund fresh sBTC: (ok true)
+ok   199. member deposit: (ok (tuple (amount u100000000000) (epoch u0) (sbtc-paid u0) (shares u100000000000) (stx-paid u0)))
+ok   200. member deposit: (ok (tuple (amount u10000000000) (epoch u0) (sbtc-paid u0) (shares u10000000000) (stx-paid u0)))
+  [two members] epoch=0 shares=110000000000 index=1000000000000 held=0 resting=110000000000
+ok   201. rung quote is executable outside mid: 25587877071167
+ok   202. real fill toward 500000: (ok (tuple (rebate-refunded u173) (token-x-received u0) (token-x-rolled u0) (token-y-received u109889500068) (token-y-rolled u0)))
+ok   203. fill returns output: 109889500068
+ok   204. taker leaves no resting position: u0
+ok   205. real fills reduced rung inventory: 500433
+inventory 110000000000 -> 500433, target 500000
+ok   206. sync rung: (ok true)
+  [after fills] epoch=0 shares=110000000000 index=4549390 held=500433 resting=0
+ok   207. index is in the tail (>= SOLD_OUT_INDEX, < MINT_FLOOR): 4549390
+ok   208. residual is under the market minimum: 500433
+ok   209. reserve empty before the roll: 0
+  owed before roll: alice back=454939 proceeds=39119910; bob back=45493 proceeds=3911991
+ok   210. newcomer deposit accepted (tail roll): (ok (tuple (amount u100000000000) (epoch u1) (sbtc-paid u0) (shares u100000000000) (stx-paid u0)))
+  [after roll] epoch=1 shares=100000000000 index=1000000000000 held=0 resting=100000000001
+ok   211. epoch advanced by one: 1
+  reserve after roll: 500432
+ok   212. reserve covers what old members are owed: 500432
+ok   213. bob (old epoch) exits: (ok (tuple (sbtc u3911991) (stx u45493)))
+ok   214. bob gets the unsold share back (stx): 45493
+ok   215. bob gets the exact proceeds (sbtc): 3911991
+ok   216. alice (old epoch) exits: (ok (tuple (sbtc u39119910) (stx u454939)))
+ok   217. alice gets the unsold share back (stx): 454939
+ok   218. alice gets the exact proceeds (sbtc): 39119910
+  reserve left after both old members: 0 (rounding dust, never paid out)
+ok   219. reserve never goes short (no underflow on the last exit): 0
+ok   220. reserve leftover is rounding dust (< number of old members): 0
+ok   221. member exit: (ok (tuple (sbtc u0) (stx u100000000000)))
+ok   222. newcomer exits with her deposit (no fills in the new epoch): 100000000000
+222/222 checks green so far; jing-sell-stx-core-spread: https://stxer.xyz/simulations/mainnet/eefc8d8494a303190de6f6feffe5abc6
+
+222/222 checks green
+jing-buy-stx: https://stxer.xyz/simulations/mainnet/cf9b7eb16e37f7fbf17aa43c0b34f2ae
+jing-buy-stx-market-spread: https://stxer.xyz/simulations/mainnet/311c7747ab2031c185897304a10b3a2d
+jing-buy-stx-core-spread: https://stxer.xyz/simulations/mainnet/e97f17b8289fcb701552e47e57048bf4
+jing-sell-stx: https://stxer.xyz/simulations/mainnet/b9c99bebdd48d38d186fb83c67b49a1d
+jing-sell-stx-market-spread: https://stxer.xyz/simulations/mainnet/fe3d9ab398539e81542cb3496442535e
+jing-sell-stx-core-spread: https://stxer.xyz/simulations/mainnet/eefc8d8494a303190de6f6feffe5abc6
