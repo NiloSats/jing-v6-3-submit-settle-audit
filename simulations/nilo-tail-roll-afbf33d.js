@@ -149,7 +149,8 @@ async function scenario(side,kind) {
  for(const who of [alice,bob,carol])await fund(side,who,big*4n);
  await fund(opposite(side),taker,side==='x'?1000000000000n:1000000000n);
  const state=()=>read(rung,'(get-state)');
- const actual=()=>get(rung,`(+ (market-size) ${side==='x'?`(unwrap-panic (contract-call? '${SBTC} get-balance current-contract))`:'(stx-get-balance current-contract)'})`);
+ // the pool's own inventory: the tail-roll reserve owed to closed epochs is excluded, as sync does
+ const actual=()=>get(rung,`(- (+ (market-size) ${side==='x'?`(unwrap-panic (contract-call? '${SBTC} get-balance current-contract))`:'(stx-get-balance current-contract)'}) (var-get ${side==='x'?'reserved-sats':'reserved-ustx'}))`);
  const sync=()=>tx('sync rung',keeper,rung,'sync',[],'(ok true)');
  const deposit=(who,amount)=>tx('member deposit',who,rung,'deposit',[uintCV(amount)],ok);
  const exit=(who,amount=big*100n)=>tx('member exit',who,rung,'withdraw',[uintCV(amount),someCV(update(signed))],ok);
@@ -198,6 +199,7 @@ async function scenario(side,kind) {
  console.log(`  reserve after roll: ${res0}`);
  check('reserve covers what old members are owed',res0,v=>v>=aOwed.back+bOwed.back);
  // 4. Old members leave: each gets exactly proceeds + unsold share.
+ const exitOld=async()=>{
  for(const [nm,who,o] of [['bob',bob,bOwed],['alice',alice,aOwed]]){
   const inS=await wallet(side,who),inO=await wallet(opposite(side),who);
   await tx(`${nm} (old epoch) exits`,who,rung,'withdraw',[uintCV(big*100n),someCV(update(signed))],ok);
@@ -207,11 +209,44 @@ async function scenario(side,kind) {
  const left=await reserved();
  console.log(`  reserve left after both old members: ${left} (rounding dust, never paid out)`);
  check('reserve never goes short (no underflow on the last exit)',left,v=>v>=0n);
- check('reserve leftover is rounding dust (< number of old members)',left,v=>v<2n);
+ if(process.env.ROLLS!=='2')check('reserve leftover is rounding dust (< number of old members)',left,v=>v<2n);
+ };
+ if(process.env.ROLLS!=='2')await exitOld();
+ if(process.env.ROLLS!=='2'){
  // 5. The new epoch works normally: carol can leave with her deposit.
  const cIn=await wallet(side,carol);
  await exit(carol);
  check('newcomer exits with her deposit (no fills in the new epoch)',await wallet(side,carol)-cIn,v=>v>=big-2n&&v<=big);
+ console.log(`${passed}/${checks} checks green so far; ${link}`);
+ return;
+ }
+ // 5b. ROLLS=2: carol's epoch is filled into its own tail and a fourth member rolls it again,
+ // while carol has NOT left. Two closed epochs now owe from the same reserve.
+ const dave=mk(886);await fund(side,dave,big*4n);
+ await sellTo(residualTarget);await sync();
+ const t2=await show('epoch 1 after fills');
+ check('epoch 1 is in its tail too',t2.index,v=>v>=1000000n&&v<FLOOR);
+ const cOwed=await posOf(carol);
+ console.log(`  carol owed before second roll: back=${cOwed.back} proceeds=${cOwed.proceeds}`);
+ const resBefore=await reserved();
+ await tx('fourth member deposit rolls epoch 1',dave,rung,'deposit',[uintCV(big)],ok);
+ const r2=await show('after second roll');
+ check('epoch advanced to 2',r2.epoch,t.epoch+2n);
+ const res2=await reserved();
+ console.log(`  reserve before/after second roll: ${resBefore} -> ${res2}`);
+ check('second roll adds at least carol unsold share to the reserve',res2-resBefore,v=>v>=cOwed.back);
+ check('reserve now holds both closed epochs (epoch 0 + epoch 1 owed)',res2,v=>v>=aOwed.back+bOwed.back+cOwed.back);
+ await exitOld();
+ const inS=await wallet(side,carol),inO=await wallet(opposite(side),carol);
+ await tx('carol (epoch 1) exits after the second roll',carol,rung,'withdraw',[uintCV(big*100n),someCV(update(signed))],ok);
+ check('carol gets her unsold share back',await wallet(side,carol)-inS,cOwed.back);
+ check('carol gets her exact proceeds',await wallet(opposite(side),carol)-inO,cOwed.proceeds);
+ const res3=await reserved();
+ console.log(`  reserve left after both rolls settled: ${res3}`);
+ check('reserve never short after two rolls, all three old members paid',res3,v=>v>=0n&&v<3n);
+ const dIn=await wallet(side,dave);
+ await exit(dave);
+ check('fourth member exits with his deposit',await wallet(side,dave)-dIn,v=>v>=big-2n&&v<=big);
  console.log(`${passed}/${checks} checks green so far; ${link}`);
 }
 main().catch(e=>{console.error(e);console.log(`${passed}/${checks} checks green`);process.exit(1);});

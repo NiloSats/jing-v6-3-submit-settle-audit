@@ -171,6 +171,29 @@ Full log: `logs/tail-roll-afbf33d-2026-09-25.log`.
 
 One small observation from the runs: the part of the residual above the reserve (1 sat, or 1 uSTX) stays in the contract and shows up as resting in the new epoch (`resting=100000001` against a 100000000 deposit). The newcomer exits with exactly her deposit, so that unit isn't paid to anyone in this run.
 
+### 3b. Two tail rolls in a row, with the first epoch's members still in (added 2026-09-25)
+
+Same harness with `ROLLS=2`: after the first roll, alice and bob (epoch 0) **stay in**. The newcomer's epoch 1 is filled into its own tail by the same public swaps, and a fourth member's deposit rolls it again. Two closed epochs then owe from the same reserve at once. After that, alice, bob and carol exit.
+
+Checked on top of section 3: epoch 1 really is in its tail before the second roll; the second roll adds at least carol's unsold share; the reserve then covers **both** closed epochs; each of the three old members gets exactly the proceeds and unsold share read from `get-position` before the roll that closed their epoch; the reserve ends without going short; the fourth member exits with his deposit.
+
+**Result: 312/312 checks green, all six rungs.**
+
+| rung | reserve after roll 1 → after roll 2 | reserve after all old members exit | fork |
+|---|---|---|---|
+| `jing-buy-stx` | 500 → 1,001 sats | 0 | https://stxer.xyz/simulations/mainnet/66f9e3c0094505c127102b35bdc3bbba |
+| `jing-buy-stx-market-spread` | 500 → 1,001 sats | 0 | https://stxer.xyz/simulations/mainnet/9e3a26ba6116a62b649b45d586c21182 |
+| `jing-buy-stx-core-spread` | 500 → 1,001 sats | 0 | https://stxer.xyz/simulations/mainnet/d2c25660fd19eed7e4d358690fea694f |
+| `jing-sell-stx` | 502,217 → 1,004,436 uSTX | 0 | https://stxer.xyz/simulations/mainnet/ab0fbd1b8f4f252d776ea76eb9d3bb73 |
+| `jing-sell-stx-market-spread` | 501,369 → 1,003,297 uSTX | 0 | https://stxer.xyz/simulations/mainnet/d024b5e2b967e30fb79019a73306426a |
+| `jing-sell-stx-core-spread` | 500,132 → 1,001,864 uSTX | 0 | https://stxer.xyz/simulations/mainnet/9c800f61642fe10a9240b695dad08ac5 |
+
+The two sell-stx spread rungs were also rerun as separate processes (52/52 each: `1e73854c…`, `de011dbc…`). Full logs: `logs/tail-roll-afbf33d-two-rolls-2026-09-25.log`.
+
+**A harness bug I hit, and fixed, along the way.** My first two-roll attempt failed: epoch 1 closed as sold out instead of rolling. The cause was my harness, not the contract. Its inventory helper counted the whole contract balance, reserve included, so "fill down to a 500 residual" really drained the pool while the reserve still held 500. The helper now subtracts `reserved-sats`/`reserved-ustx`, as `sync` does. Section 3's single-roll results are unaffected, since the reserve was 0 during those fills.
+
+**Still not covered:** a roll while an order is pending settlement, three or more old members (rounding dust), and a member position that rounds to 0 (F-8).
+
 ---
 
 ## Changelog
@@ -178,3 +201,4 @@ One small observation from the runs: the part of the residual above the reserve 
 - **v1, 2026-09-24 00:33 UTC.** Finding 1 with 12 fork runs. The submit + settle checks in section 2.
 - **v1.1, 2026-09-24 ~01:55 UTC.** **Retracted** my v1 claim that settle's caught u1010 leaves no partial writes (section 2, A/C). It is wrong when `seated-on` exceeds `seats-per-side`. That was found by another submission and is credited to it; I verified it by reading the code and did not re-execute it. Finding 1 is unaffected.
 - **v1.2, 2026-09-25 ~22:30 UTC.** Added section 3: fork test of the maintainer's fix `afbf33d` (lossless tail roll), 222/222 on all six rungs, with its limits. Finding 1 and section 2 unchanged.
+- **v1.3, 2026-09-25 ~22:50 UTC.** Added 3b: two tail rolls in a row with the first epoch still owed, 312/312 on all six rungs; documented and fixed a bug in my own harness found on the way.
