@@ -196,9 +196,40 @@ The two sell-stx spread rungs were also rerun as separate processes (52/52 each:
 
 ---
 
+## 4. Fork test of the current design: sync closes losslessly (`b17ab2b` + `f015382`, tested at `0da8978`) (added 2026-09-26)
+
+After section 3 the maintainer changed the design (`b17ab2b`, ported to all rungs in `f015382`). `sync` itself now closes every sold-out epoch through `roll-tail` (on dust or an index under `MINT_FLOOR`), the deposit-time roll is gone, and F-7/F-8 changes land in the same commits. The commit message says the rungs were *"not fork-tested"*. This section fork-tests that design with the six rungs and the ladder as they are at `0da8978`, no source edits.
+
+**What was run.** `simulations/nilo-lossless-close-0da8978.js`: the same real fills through public `swap` that froze the rung at `24f3e23`, then:
+
+1. `sync` alone (no deposit) closes epoch 0: epoch → 1, index back to `SCALE`, no shares left; the reserve covers the closed members' unsold share read from `get-position`;
+2. carol joins the fresh epoch, it's filled into its own tail, and `sync` closes it again. alice and bob (epoch 0) are **still in**, so two closed epochs owe from the same reserve;
+3. all three old members exit after both closes, each paid **exactly** the proceeds and unsold share read after their epoch closed; the reserve ends without going short;
+4. a fresh depositor (dave) joins the empty epoch 2 and exits with at least his deposit.
+
+**Result: 294/294 checks green, all six rungs (49 each).**
+
+| rung | reserve after close 1 → close 2 | reserve after the three exits | dave in → out | fork |
+|---|---|---|---|---|
+| `jing-buy-stx` | 500 → 1,000 sats | 0 | 100,000,000 → 100,000,001 | https://stxer.xyz/simulations/mainnet/431fb469459145864e4e155854e46860 |
+| `jing-buy-stx-market-spread` | 500 → 1,000 sats | 0 | 100,000,000 → 100,000,001 | https://stxer.xyz/simulations/mainnet/269f9478f049bf443a8f67a66819dde1 |
+| `jing-buy-stx-core-spread` | 500 → 1,000 sats | 0 | 100,000,000 → 100,000,001 | https://stxer.xyz/simulations/mainnet/f6e8375541d6583e36a4e57a4a536e17 |
+| `jing-sell-stx` | 501,042 → 1,002,085 uSTX | 0 | 100,000,000,000 → 100,000,000,001 | https://stxer.xyz/simulations/mainnet/42e22b5856161dd240a4bbc5d5cfcb05 |
+| `jing-sell-stx-market-spread` | 501,276 → 1,003,699 uSTX | 0 | 100,000,000,000 → 100,000,000,001 | https://stxer.xyz/simulations/mainnet/a3c1fda62d93916b02160961249ba589 |
+| `jing-sell-stx-core-spread` | 500,606 → 1,001,252 uSTX | 0 | 100,000,000,000 → 100,000,000,001 | https://stxer.xyz/simulations/mainnet/938c75ff8be7e9e38d86c3668516a957 |
+
+Full logs: `logs/lossless-close-0da8978-2026-09-26.log`.
+
+**One thing this shows about F-7.** After each close, one unit (1 sat, or 1 uSTX) sat in the rung with no owner (`held=1`, `shares=0`). The first depositor into the empty epoch took it in: dave got back his deposit plus that unit. That matches the commit's intent ("the first deposit into an empty pool mints for the orphan units too"). Nothing is stranded in this run.
+
+**Not covered here:** a close while an order is pending settlement; three or more members in one closing epoch (rounding dust); a position that rounds to 0 exiting (the F-8 change); the payout log events (`log-payout`) are not asserted.
+
+---
+
 ## Changelog
 
 - **v1, 2026-09-24 00:33 UTC.** Finding 1 with 12 fork runs. The submit + settle checks in section 2.
 - **v1.1, 2026-09-24 ~01:55 UTC.** **Retracted** my v1 claim that settle's caught u1010 leaves no partial writes (section 2, A/C). It is wrong when `seated-on` exceeds `seats-per-side`. That was found by another submission and is credited to it; I verified it by reading the code and did not re-execute it. Finding 1 is unaffected.
 - **v1.2, 2026-09-25 ~22:30 UTC.** Added section 3: fork test of the maintainer's fix `afbf33d` (lossless tail roll), 222/222 on all six rungs, with its limits. Finding 1 and section 2 unchanged.
 - **v1.3, 2026-09-25 ~22:50 UTC.** Added 3b: two tail rolls in a row with the first epoch still owed, 312/312 on all six rungs; documented and fixed a bug in my own harness found on the way.
+- **v1.4, 2026-09-26 ~04:45 UTC.** Added section 4: fork test of the current design (sync closes losslessly; `b17ab2b` + `f015382`, rungs and ladder at `0da8978`), 294/294 on all six rungs, including two closes with the first epoch still owed and the F-7 orphan unit.
